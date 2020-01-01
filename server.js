@@ -14,17 +14,30 @@ const userSchema = {
 };
 const exerciceSchema = {
     user: {userSchema},
-    userId : String
+    description : {type:String ,required:true},
+    duration : {type:Number , required:true},
+    date : String
 };
 // create a model from the schema
 const userColModel = mongoose.model("user", userSchema);
+const exerciceColModel = mongoose.model("exercice", exerciceSchema);
 app.use(cors())
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 
-app.use(express.static('public'))
+app.use(express.static('public'));
+app.post("/api/exercise/new-user",(req, res)=>{
+  var username = req.body.username;
+  userColModel.find({username: username}, function (err, docs) {
+        if (docs.length){
+            cb('Name exists already',null);
+        }else{
+            user.save(function(err){
+                cb(err,user);
+            });
+});
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
