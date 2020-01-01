@@ -30,13 +30,18 @@ app.use(bodyParser.json())
 app.use(express.static('public'));
 app.post("/api/exercise/new-user",(req, res)=>{
   var username = req.body.username;
-  userColModel.find({username: username}, function (err, docs) {
-        if (docs.length){
-            cb('Name exists already',null);
-        }else{
-            user.save(function(err){
+  userColModel.find({username: username}, function (err, usersfound) {
+        if (usersfound===null){
+          const user = new itemColModel({
+    username: username
+});
+          user.save(function(err){
                 cb(err,user);
             });
+            
+        }else{
+          console.log('Name exists already');
+        }
 });
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
