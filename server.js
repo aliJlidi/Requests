@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 app.post("/api/exercise/new-user", (req, res) => {
   var userInput = req.body.username;
   var userId = cryptr.encrypt(userInput);
-  var userIdSet = userId.subString(0,6);
+  var userIdSet = userId.substring(0,6);
   userModel.findOne({ username: userInput },(err, usersfound)=> {
     if (!err) {
       if (!usersfound) {
