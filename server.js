@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 app.post("/api/exercise/new-user", (req, res) => {
   var username = req.body.username;
-  userColModel.find({ username: username }, function(err, usersfound) {
+  userColModel.find({ username: username },(err, usersfound) =>{
     if (usersfound === null) {
       const user = new userColModel({
         username: username,
