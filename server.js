@@ -6,7 +6,13 @@ const mongoose = require("mongoose");
 var cipher = require('cipher')
 require('dotenv').config();
 app.use(express.static("public"));
+app.use(bodyParser.urlencoded({extended: true}));
+try{
 mongoose.connect(process.env.MLAB_URI,{useNewUrlParser: true});
+  }
+catch(e){
+  console.log(e);
+}
 //create a collection schema
 const userSchema = mongoose.Schema({
   username: { type: String, required: true },
@@ -32,6 +38,7 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 app.post("/api/exercise/new-user", (req, res) => {
   var username = req.body.username;
+  console.log(username);
   userColModel.find({ username: username },(err, usersfound) =>{
     if (usersfound === null) {
       const user = new userColModel({
