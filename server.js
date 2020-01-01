@@ -14,14 +14,14 @@ catch(e){
   console.log(e);
 }
 //create a collection schema
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   userId: String
 });
 //sipher the username to get the Id
 
-const exerciceSchema = mongoose.Schema({
-  user: { userSchema },
+const exerciceSchema =new mongoose.Schema({
+  userId: { type: String, required: true  },
   description: { type: String, required: true },
   duration: { type: Number, required: true },
   date: String
@@ -35,7 +35,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(express.static("public"));
+
 app.post("/api/exercise/new-user", (req, res) => {
   var username = req.body.username;
   console.log(username);
@@ -47,12 +47,12 @@ app.post("/api/exercise/new-user", (req, res) => {
       });
       user.save((err)=> {
         if(!err){
-          res.json({username:username,userId:cipher.encrypt(username)});
+          res.send("test done");//{username:username,userId:cipher.encrypt(username)}
         }
       });
     } else {
       console.log("Name exists already");
-      res.json({username:"User name exists"});
+      res.send({username:"User name exists"});
     }
   });
 });
