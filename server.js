@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const mongoose = require("mongoose");
-var cipher = require('cipher')
-require('dotenv').config();
+var cipher = require('cipher');
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+
 try{
 mongoose.connect(process.env.MLAB_URI,{useNewUrlParser: true});
+  console.log("DB Connected Successfully");
   }
 catch(e){
   console.log(e);
@@ -30,9 +30,7 @@ const exerciceSchema =new mongoose.Schema({
 const userColModel = mongoose.model("user", userSchema);
 const exerciceColModel = mongoose.model("exercice", exerciceSchema);
 
-app.use(cors());
 
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
