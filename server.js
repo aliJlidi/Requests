@@ -38,7 +38,8 @@ app.use(bodyParser.json());
 app.post("/api/exercise/new-user", (req, res) => {
   var username = req.body.username;
   console.log(username);
-  userColModel.find({username: username },(err, usersfound) =>{
+  userColModel.findOne({username:username},function(err, usersfound){
+    if(!err){
     if (!usersfound) {
       const user1 = new userColModel({
         username: username,
@@ -53,7 +54,11 @@ app.post("/api/exercise/new-user", (req, res) => {
       console.log("Name exists already");
       res.send({username:"User name exists"});
     }
+      }else{
+        res.send(err);
+      }
   });
+  res.send("find function not working");
 });
 
 app.get("/", (req, res) => {
