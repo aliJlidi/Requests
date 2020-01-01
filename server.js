@@ -3,26 +3,25 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-var cipher = require('cipher');
+var cipher = require("cipher");
 app.use(express.static("public"));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-try{
-mongoose.connect(process.env.MLAB_URI,{useNewUrlParser: true});
+try {
+  mongoose.connect(process.env.MLAB_URI, { useNewUrlParser: true });
   console.log("DB Connected Successfully");
-  }
-catch(e){
+} catch (e) {
   console.log(e);
 }
 //create a collection schema
 const userSchema = mongoose.Schema({
-  username:{ type: String, required: true },
+  username: String, 
   userId: String
 });
 //sipher the username to get the Id
 
 const exerciceSchema = mongoose.Schema({
-  userId: { type: String, required: true  },
+  userId: { type: String, required: true },
   description: { type: String, required: true },
   duration: { type: Number, required: true },
   date: String
@@ -31,32 +30,31 @@ const exerciceSchema = mongoose.Schema({
 const userColModel = mongoose.model("user", userSchema);
 const exerciceColModel = mongoose.model("exercice", exerciceSchema);
 
-
 app.use(bodyParser.json());
 
-
 app.post("/api/exercise/new-user", (req, res) => {
-  var username = req.body.username;
-  console.log(username);
-  userColModel.findOne({username:username},function(err, usersfound){
-    if(!err){
-    if (!usersfound) {
-      const user1 = new userColModel({
-        username: username,
-        userId: cipher.encrypt(username)
-      });
-      user1.save((err)=> {
-        if(!err){
-          res.send("test done");//{username:username,userId:cipher.encrypt(username)}
-        }
-      });
-    } else {
-      console.log("Name exists already");
-      res.send({username:"User name exists"});
-    }
-      }else{
-        res.send(err);
+  var userInput = req.body.username;
+
+  userColModel.find({ username: userInput },null, function(err, usersfound) {
+    if (!err) {
+      if (!usersfound) {
+        const user1 = new userColModel({
+          username: userInput,
+          userId: cipher.encrypt(userInput)
+        });
+        user1.save(err => {
+          if (!err) {
+            res.send("test done"); //{username:username,userId:cipher.encrypt(username)}
+          }
+        });
+      } else {
+        console.log("Name exists already");
+        res.send({ username: "User name exists" });
       }
+    }
+    else {
+      res.send("problem in err");
+    }
   });
   res.send("find function not working");
 });
