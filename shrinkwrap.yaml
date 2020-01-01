@@ -1,6 +1,6 @@
 dependencies:
   body-parser: 1.19.0
-  cipher: 0.0.0
+  cryptr: 6.0.1
   express: 4.17.1
   mongoose: 5.8.3
 packages:
@@ -50,10 +50,6 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha512-zauLjrfCG+xvoyaqLoV8bLVXXNGC4JqlxFCutSDWA6fJrTo2ZuvLYTqZ7aHBLZSMOopbzwv8f+wZcVzfVTI2Dg==
-  /cipher/0.0.0:
-    dev: false
-    resolution:
-      integrity: sha1-zB1YUhl8L/AJLnPbJV8ONZ/rRqY=
   /content-disposition/0.5.3:
     dependencies:
       safe-buffer: 5.1.2
@@ -78,6 +74,10 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
+  /cryptr/6.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-PD9twTbG18KfCeEkgEM6BrorTLMt+koQQ6/czeELvSFYeaE9nU9+u6cElZgul+Zbt3o5LGi6UWSTkmgiqK1lIA==
   /debug/2.6.9:
     dependencies:
       ms: 2.0.0
@@ -534,6 +534,6 @@ shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   body-parser: ^1.15.2
-  cipher: ^0.0.0
+  cryptr: ^6.0.0
   express: ^4.14.0
   mongoose: ^5.8.3

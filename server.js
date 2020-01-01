@@ -3,7 +3,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-var cipher = require("cipher");
+const Cryptr = require('cryptr');
+const cryptr = new Cryptr(process.env.MY_SECRET);
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -36,19 +37,20 @@ app.get("/", (req, res) => {
 });
 app.post("/api/exercise/new-user", (req, res) => {
   var userInput = req.body.username;
-
+  var userId = cryptr.encrypt(userInput);
+  var userIdSet = userId.subString(0,6);
   userModel.findOne({ username: userInput },(err, usersfound)=> {
     if (!err) {
       if (!usersfound) {
         
         const user1 = new userModel({
           username: userInput,
-          userId: cipher.encrypt(userInput)
+          userId: userIdSet
         });
         
         user1.save(err => {
           if (!err) {
-            res.send({username:userInput,userId:cipher.encrypt(userInput)}); 
+            res.send({username:userInput,userId:userIdSet}); 
           }
         });
       } else {
