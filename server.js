@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -20,7 +21,7 @@ const userSchema = mongoose.Schema({
 });
 //sipher the username to get the Id
 
-const exerciceSchema =new mongoose.Schema({
+const exerciceSchema = mongoose.Schema({
   userId: { type: String, required: true  },
   description: { type: String, required: true },
   duration: { type: Number, required: true },
@@ -37,13 +38,13 @@ app.use(bodyParser.json());
 app.post("/api/exercise/new-user", (req, res) => {
   var username = req.body.username;
   console.log(username);
-  userColModel.find({ username: username },(err, usersfound) =>{
-    if (usersfound === null) {
-      const user = new userColModel({
+  userColModel.find({username: username },(err, usersfound) =>{
+    if (!usersfound) {
+      const user1 = new userColModel({
         username: username,
         userId: cipher.encrypt(username)
       });
-      user.save((err)=> {
+      user1.save((err)=> {
         if(!err){
           res.send("test done");//{username:username,userId:cipher.encrypt(username)}
         }
