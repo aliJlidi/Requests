@@ -13,7 +13,8 @@
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "shortid": "^2.2.6",
-    "cipher": "^0.0.0"
+    "cipher": "^0.0.0",
+    "dotenv": "^8.2.0"
   },
   "engines": {
     "node": "6.9.1"

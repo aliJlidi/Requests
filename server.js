@@ -4,7 +4,9 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 var cipher = require('cipher')
-mongoose.connect(process.env.MLAB_URI || "mongodb://localhost/exercise-track");
+require('dotenv').config();
+app.use(express.static("public"));
+mongoose.connect(process.env.MLAB_URI,{useNewUrlParser: true});
 //create a collection schema
 const userSchema = mongoose.Schema({
   username: { type: String, required: true },
