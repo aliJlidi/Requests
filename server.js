@@ -14,7 +14,7 @@ try {
   console.log(e);
 }
 //create a collection schema
-let userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   username: String, 
   userId: String
 });
@@ -27,7 +27,7 @@ const exerciceSchema = mongoose.Schema({
   date: String
 });
 // create a model from the schema
-let Model = mongoose.model("user", userSchema);
+const userModel = mongoose.model("user", userSchema);
 const exerciceColModel = mongoose.model("exercice", exerciceSchema);
 
 app.use(bodyParser.json());
@@ -37,23 +37,21 @@ app.get("/", (req, res) => {
 app.post("/api/exercise/new-user", (req, res) => {
   var userInput = req.body.username;
 
-  Model.find({ username: userInput },(err, usersfound)=> {
+  userModel.findOne({ username: userInput },(err, usersfound)=> {
     if (!err) {
-      
       if (!usersfound) {
         
-        const user1 = new Model({
+        const user1 = new userModel({
           username: userInput,
           userId: cipher.encrypt(userInput)
         });
         
         user1.save(err => {
           if (!err) {
-            res.send("test done"); //{username:username,userId:cipher.encrypt(username)}
+            res.send({username:userInput,userId:cipher.encrypt(userInput)}); 
           }
         });
       } else {
-        console.log("Name exists already");
         res.send({ username: "User name exists" });
       }
     }
