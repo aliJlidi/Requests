@@ -13,7 +13,7 @@ const userSchema =new mongoose.Schema({
     userId : String
 });
 //sipher the username to get the Id
-userSchema.plugin(encipher, { fields: userId, secret: process.env.MY_SECRET })
+userSchema.plugin(encipher, { fields:[], secret: process.env.MY_SECRET })
 const exerciceSchema = new mongoose.Schema({
     user: {userSchema},
     description : {type:String ,required:true},
@@ -35,7 +35,7 @@ app.post("/api/exercise/new-user",(req, res)=>{
   var username = req.body.username;
   userColModel.find({username: username}, function (err, usersfound) {
         if (usersfound===null){
-          const user = new itemColModel({
+          const user = new userColModel({
     username: username,
             userId: username
 });
@@ -45,6 +45,7 @@ app.post("/api/exercise/new-user",(req, res)=>{
           console.log('Name exists already');
         }
 });
+});
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
@@ -53,7 +54,7 @@ app.get('/', (req, res) => {
 // Not found middleware
 app.use((req, res, next) => {
   return next({status: 404, message: 'not found'})
-})
+});
 
 // Error Handling middleware
 app.use((err, req, res, next) => {
@@ -72,8 +73,8 @@ app.use((err, req, res, next) => {
   }
   res.status(errCode).type('txt')
     .send(errMessage)
-})
+});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
-})
+});
