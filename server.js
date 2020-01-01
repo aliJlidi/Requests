@@ -14,8 +14,8 @@ catch(e){
   console.log(e);
 }
 //create a collection schema
-const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
+const userSchema = mongoose.Schema({
+  username:{ type: String, required: true },
   userId: String
 });
 //sipher the username to get the Id
