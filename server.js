@@ -1,10 +1,9 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const encipher = require("mongoose-encipher").default;
 const cors = require("cors");
-
 const mongoose = require("mongoose");
+var cipher = require('cipher')
 mongoose.connect(process.env.MLAB_URI || "mongodb://localhost/exercise-track");
 //create a collection schema
 const userSchema = mongoose.Schema({
@@ -13,7 +12,7 @@ const userSchema = mongoose.Schema({
 });
 //sipher the username to get the Id
 userSchema.plugin(encipher, {
-  fields: ["userId"],
+  fields: "userId",
   secret: process.env.MY_SECRET
 });
 const exerciceSchema = mongoose.Schema({
