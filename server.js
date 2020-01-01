@@ -6,7 +6,18 @@ const cors = require('cors')
 
 const mongoose = require('mongoose')
 mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
-
+//create a collection schema
+const userSchema = {
+    username: {type :String ,
+               required: true},
+    userId : String
+};
+const exerciceSchema = {
+    user: {userSchema},
+    userId : String
+};
+// create a model from the schema
+const userColModel = mongoose.model("user", userSchema);
 app.use(cors())
 
 app.use(bodyParser.urlencoded({extended: false}))
