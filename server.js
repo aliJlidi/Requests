@@ -14,7 +14,7 @@ try {
   console.log(e);
 }
 //create a collection schema
-const userSchema = mongoose.Schema({
+let userSchema = mongoose.Schema({
   username: String, 
   userId: String
 });
@@ -27,7 +27,7 @@ const exerciceSchema = mongoose.Schema({
   date: String
 });
 // create a model from the schema
-const userColModel = mongoose.model("user", userSchema);
+let userColModel = mongoose.model("user", userSchema);
 const exerciceColModel = mongoose.model("exercice", exerciceSchema);
 
 app.use(bodyParser.json());
@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 app.post("/api/exercise/new-user", (req, res) => {
   var userInput = req.body.username;
 
-  userColModel.find({ username: userInput },null, function(err, usersfound) {
+  userColModel.find({ username: userInput },(err, usersfound)=> {
     if (!err) {
       if (!usersfound) {
         const user1 = new userColModel({
@@ -56,7 +56,7 @@ app.post("/api/exercise/new-user", (req, res) => {
       res.send("problem in err");
     }
   });
-  res.send("find function not working");
+
 });
 
 app.get("/", (req, res) => {
