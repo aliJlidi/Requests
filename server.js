@@ -1,26 +1,29 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-
+const encipher = require('mongoose-encipher')
 const cors = require('cors')
 
 const mongoose = require('mongoose')
 mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
 //create a collection schema
-const userSchema = {
+const userSchema =new mongoose.Schema({
     username: {type :String ,
                required: true},
     userId : String
-};
-const exerciceSchema = {
+});
+//sipher the username to get the Id
+userSchema.plugin(encipher, { fields: userId, secret: process.env.MY_SECRET })
+const exerciceSchema = new mongoose.Schema({
     user: {userSchema},
     description : {type:String ,required:true},
     duration : {type:Number , required:true},
     date : String
-};
+});
 // create a model from the schema
 const userColModel = mongoose.model("user", userSchema);
 const exerciceColModel = mongoose.model("exercice", exerciceSchema);
+
 app.use(cors())
 
 app.use(bodyParser.urlencoded({extended: false}))
@@ -33,11 +36,10 @@ app.post("/api/exercise/new-user",(req, res)=>{
   userColModel.find({username: username}, function (err, usersfound) {
         if (usersfound===null){
           const user = new itemColModel({
-    username: username
+    username: username,
+            userId: username
 });
-          user.save(function(err){
-                cb(err,user);
-            });
+          user.save();
             
         }else{
           console.log('Name exists already');
