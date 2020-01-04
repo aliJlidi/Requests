@@ -17,7 +17,7 @@ try {
 //create a collection schema
 const userSchema = new mongoose.Schema({
   username: String, 
-  userId: String
+  _id: String
 });
 //sipher the username to get the Id
 
@@ -35,6 +35,17 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
+
+app.get("/api/exercise/users", (req, res) => {
+  userModel.find({},(err, usersFound)=>{
+    if(!err){
+      console.log(usersFound);
+    }
+  })
+});
+
+
+
 app.post("/api/exercise/new-user", (req, res) => {
   var userInput = req.body.username;
   var userId = cryptr.encrypt(userInput);
@@ -45,12 +56,12 @@ app.post("/api/exercise/new-user", (req, res) => {
         
         const user1 = new userModel({
           username: userInput,
-          userId: userIdSet
+          _id: userIdSet
         });
         
         user1.save(err => {
           if (!err) {
-            res.send({username:userInput,userId:userIdSet}); 
+            res.send({username:userInput,_id:userIdSet}); 
           }
         });
       } else {
