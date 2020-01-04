@@ -29,7 +29,7 @@ const exerciceSchema = mongoose.Schema({
 });
 // create a model from the schema
 const userModel = mongoose.model("user", userSchema);
-const exerciceColModel = mongoose.model("exercice", exerciceSchema);
+const exerciceModel = mongoose.model("exercice", exerciceSchema);
 
 app.use(bodyParser.json());
 app.get("/", (req, res) => {
@@ -54,14 +54,14 @@ app.post("/api/exercise/new-user", (req, res) => {
     if (!err) {
       if (!usersfound) {
         
-        const user1 = new userModel({
+        const user = new userModel({
           username: userInput,
           _id: userIdSet
         });
         
-        user1.save(err => {
+        user.save(err => {
           if (!err) {
-            res.send({username:userInput,_id:userIdSet}); 
+             res.send(user); //{username:userInput,_id:userIdSet}
           }
         });
       } else {
@@ -83,17 +83,18 @@ var date= req.body.date;
 if(date===null){
   date = new Date();
 }
-userModel.findOne({ _id: id },(err, usersfound)=> {
-          const exercie = new userModel({
-          username: userInput,
-          _id: userIdSet
+userModel.findOne({ _id: id },(err, userfound)=> {
+          const exercice = new exerciceModel({
+          user : userfound,
+          description : desc,
+            duration: dur,
+            date: date
         });
-//   const exerciceSchema = mongoose.Schema({
-//   user: [userSchema],
-//   description: { type: String, required: true },
-//   duration: { type: Number, required: true },
-//   date: String
-// });
+       exercice.save(err => {
+          if (!err) {
+            res.send(exercice); 
+          }
+        });
 });
 
 });
