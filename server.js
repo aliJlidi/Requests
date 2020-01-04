@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
 app.get("/api/exercise/users", (req, res) => {
   userModel.find({},(err, usersFound)=>{
     if(!err){
-      console.log(usersFound);
+      res.send(usersFound.map((x)=> x.username));
     }
   })
 });
