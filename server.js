@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
 //sipher the username to get the Id
 
 const exerciceSchema = mongoose.Schema({
-  userId: { type: String, required: true },
+  user: [userSchema],
   description: { type: String, required: true },
   duration: { type: Number, required: true },
   date: String
@@ -75,7 +75,28 @@ app.post("/api/exercise/new-user", (req, res) => {
 
 });
 
+app.post("/api/exercise/add", (req, res) => {
+var id= req.body.userId;
+var desc= req.body.description;
+var dur= req.body.duration;
+var date= req.body.date;
+if(date===null){
+  date = new Date();
+}
+userModel.findOne({ _id: id },(err, usersfound)=> {
+          const exercie = new userModel({
+          username: userInput,
+          _id: userIdSet
+        });
+//   const exerciceSchema = mongoose.Schema({
+//   user: [userSchema],
+//   description: { type: String, required: true },
+//   duration: { type: Number, required: true },
+//   date: String
+// });
+});
 
+});
 
 // // Not found middleware
 // app.use((req, res, next) => {
